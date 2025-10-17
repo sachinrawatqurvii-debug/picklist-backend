@@ -9,10 +9,10 @@
   "license": "ISC",
   "author": "sachin saroj",
   "type": "module",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "dev":"node --watch app.js"
+    "start": "node index.js",
+    "dev":"node --watch index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
