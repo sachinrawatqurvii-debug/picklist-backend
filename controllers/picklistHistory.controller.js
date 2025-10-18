@@ -83,7 +83,7 @@ export const getPicklistHistoryByPicklist = async (req, res, next) => {
     try {
         const { picklist_id } = req.query;
         // Fetch paginated records
-        const history = await PicklistHistory.findOne({ PicklistHistory })
+        const history = await PicklistHistory.findOne({ picklist_id })
 
         if (!history || history.length === 0) {
             return next(new ApiError(404, "No history found for this picklist_id"));
@@ -96,4 +96,5 @@ export const getPicklistHistoryByPicklist = async (req, res, next) => {
         next(error);
     }
 };
+
 
