@@ -15,8 +15,10 @@ const picklistHistorySchema = new mongoose.Schema({
     },
     stock_updated: {
         type: Number,
+        default:null
     }
 }, { timestamps: true });
 
 const PicklistHistory = mongoose.model("PicklistHistory", picklistHistorySchema);
+
 export { PicklistHistory }
