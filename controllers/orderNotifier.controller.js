@@ -202,15 +202,12 @@ const sendNotificationToEmail = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-
-
-
 }
 
-const health = (req,res,next)=>{
-    res.status(200).json(new ApiResponse(200,{health:"I am health"},"Health route fetched successfully")
+const health = (req, res, next) => {
+    res.status(200).json(new ApiResponse(200, { health: "I am health" }, "Health route fetched successfully"))
 }
 
 
-export  {sendNotificationToEmail,health};
 
+export { sendNotificationToEmail, health };

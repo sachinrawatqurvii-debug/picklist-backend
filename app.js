@@ -15,6 +15,12 @@ import picklistResponseRoutes from './routes/picklistResponse.routes.js';
 import picklistHistoryRoutes from './routes/picklistHistory.routes.js';
 import orderNotificationRoutes from "./routes/orderNotifier.routes.js"
 
+
+app.use((req, res, next) => {
+    console.log("Request received:", req.method, req.originalUrl);
+    next();
+});
+
 // Registering Routes 
 
 app.use("/api/v1/picklist", picklistRoutes);
@@ -25,13 +31,13 @@ app.use("/api/v1/picklist-history", picklistHistoryRoutes);
 
 app.use("/api/v1/notification", orderNotificationRoutes)
 
-app.use(globalErrorHandler)
 
+
+app.use(globalErrorHandler)
 connectDB().then(() => {
     app.listen(PORT, () => {
         console.log(`Server is running on ${PORT}`)
     })
 }).catch((error) => {
     console.log(`Failed to connect with database error :: ${error}`);
-
 })
