@@ -13,7 +13,7 @@ app.use(cors());
 import picklistRoutes from './routes/picklist.routes.js';
 import picklistResponseRoutes from './routes/picklistResponse.routes.js';
 import picklistHistoryRoutes from './routes/picklistHistory.routes.js';
-
+import orderNotificationRoutes from "./routes/orderNotifier.routes.js"
 
 // Registering Routes 
 
@@ -22,7 +22,7 @@ app.use("/api/v1/picklist-responses", picklistResponseRoutes);
 app.use("/api/v1/picklist-history", picklistHistoryRoutes);
 
 // order notification routes 
-import orderNotificationRoutes from "./routes/orderNotifier.routes.js"
+
 app.use("/api/v1/notification", orderNotificationRoutes)
 
 app.use(globalErrorHandler)
@@ -33,4 +33,5 @@ connectDB().then(() => {
     })
 }).catch((error) => {
     console.log(`Failed to connect with database error :: ${error}`);
+
 })
