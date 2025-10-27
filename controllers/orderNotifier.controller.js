@@ -154,10 +154,11 @@ const sendNotificationToEmail = async (req, res, next) => {
 
 
         const recipients = [
-            "logistics@qurvii.com",
-            "kajal@qurvii.com",
-            "anu@qurvii.com",
-            "neelima@qurvii.com"
+            // "logistics@qurvii.com",
+            // "kajal@qurvii.com",
+            // "anu@qurvii.com",
+            // "neelima@qurvii.com"
+            EMAIL_ADDRESS
         ];
 
         // Send all emails in parallel

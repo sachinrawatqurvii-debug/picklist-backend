@@ -46,10 +46,27 @@ export const getPicklistHistoryByPicklistId = async (req, res, next) => {
     }
 };
 
+export const getPicklistHistoryByPicklist = async (req, res, next) => {
+    try {
+        const { picklist_id } = req.query;
+        // Fetch paginated records
+        const history = await PicklistHistory.findOne({ picklist_id })
+
+        if (!history || history.length === 0) {
+            return next(new ApiError(404, "No history found for this picklist_id"));
+        }
+
+
+        res.status(200).json(
+            new ApiResponse(200, history, "Picklist history fetched successfully", history));
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const createPicklistHistory = async (req, res, next) => {
     try {
         const { channel, picklist_id, sync_id } = req.body;
-
         if (!channel || !picklist_id || !sync_id) {
             return next(
                 new ApiError(400, "channel, picklist_id, and sync_id are required")
@@ -77,24 +94,3 @@ export const createPicklistHistory = async (req, res, next) => {
         next(error);
     }
 };
-
-
-export const getPicklistHistoryByPicklist = async (req, res, next) => {
-    try {
-        const { picklist_id } = req.query;
-        // Fetch paginated records
-        const history = await PicklistHistory.findOne({ picklist_id })
-
-        if (!history || history.length === 0) {
-            return next(new ApiError(404, "No history found for this picklist_id"));
-        }
-
-
-        res.status(200).json(
-            new ApiResponse(200, history, "Picklist history fetched successfully", history));
-    } catch (error) {
-        next(error);
-    }
-};
-
-
