@@ -41,7 +41,16 @@ const picklistResponseSchema = new mongoose.Schema({
     },
     parentStyle: {
         type: Number,
+    },
+    rackSpace: {
+        type: String,
+        required: true,
+    },
+    realated_stock: {
+        type: mongoose.Schema.Types.Mixed,
+        default: {}
     }
+
 
 }, { timestamps: true });
 
