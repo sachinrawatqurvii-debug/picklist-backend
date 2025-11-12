@@ -251,13 +251,20 @@ const sendNotificationToEmail = async (req, res, next) => {
     }
 
     try {
+        // const transporter = nodemailer.createTransport({
+        //     service: "gmail",
+        //     auth: {
+        //         user: EMAIL_ADDRESS,
+        //         pass: EMAIL_PASSWORD,
+        //     },
+        // });
         const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: EMAIL_ADDRESS,
-                pass: EMAIL_PASSWORD,
-            },
-        });
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: { user: EMAIL_ADDRESS, pass: EMAIL_PASSWORD }
+});
+
 
         // Generate PDF for alteration records
         let pdfAttachment = null;
@@ -491,4 +498,5 @@ export {
     sendNotificationToEmail,
     downloadAlterationPDF,
     health
+
 };
