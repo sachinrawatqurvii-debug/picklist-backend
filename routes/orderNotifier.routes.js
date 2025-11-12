@@ -6,10 +6,11 @@ const router = express.Router();
 router.route("/send").post(sendNotificationToEmail);
 router.route("/health").get(health);
 
-router.get("/export/pdf", generatePDF);
+// router.get("/export/pdf", generatePDF);
 
 // Export CSV for cutting / up / down
-router.get("/export/csv/:type", exportCSV);
+// router.get("/export/csv/:type", exportCSV);
+
 
 
 export default router
