@@ -260,8 +260,8 @@ const sendNotificationToEmail = async (req, res, next) => {
         // });
         const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false,
   auth: { user: EMAIL_ADDRESS, pass: EMAIL_PASSWORD }
 });
 
@@ -500,3 +500,4 @@ export {
     health
 
 };
+
