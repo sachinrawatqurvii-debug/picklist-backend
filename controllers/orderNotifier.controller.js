@@ -251,19 +251,15 @@ const sendNotificationToEmail = async (req, res, next) => {
     }
 
     try {
-        // const transporter = nodemailer.createTransport({
-        //     service: "gmail",
-        //     auth: {
-        //         user: EMAIL_ADDRESS,
-        //         pass: EMAIL_PASSWORD,
-        //     },
-        // });
-        const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: { user: EMAIL_ADDRESS, pass: EMAIL_PASSWORD }
-});
+         const transporter = nodemailer.createTransport({
+            host: "smtp-relay.brevo.com", // Sendinblue SMTP host
+            port: 587,                     // Recommended port
+            secure: false,                 // TLS false for port 587
+            auth: {
+                user: "9b6dbb001@smtp-brevo.com", // Your Brevo SMTP login
+                pass: process.env.SENDBLUE_PASSWORD   // Your Brevo SMTP password
+            }
+        });
 
 
         // Generate PDF for alteration records
@@ -500,4 +496,5 @@ export {
     health
 
 };
+
 
