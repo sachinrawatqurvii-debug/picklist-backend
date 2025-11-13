@@ -22,6 +22,7 @@
     "json2csv": "^6.0.0-alpha.2",
     "mongoose": "^8.19.1",
     "nodemailer": "^7.0.10",
+    "nodemailer-sendinblue-transport": "^2.0.1",
     "pdfkit": "^0.17.2",
     "puppeteer": "^24.29.1"
   }
