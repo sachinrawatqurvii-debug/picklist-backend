@@ -1,6 +1,7 @@
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import nodemailer from "nodemailer";
+import sendinblueTransport from "nodemailer-sendinblue-transport";
 import PDFDocument from "pdfkit";
 import fs from "fs";
 import path from "path";
@@ -10,13 +11,15 @@ const EMAIL_ADDRESS = "sachinrawatqurvii@gmail.com";
 const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
 
 // PCS rating function
-const calculateRating = (expected, actual) => {
-    if (actual >= expected) return "✅ Excellent";
+
+const calculatePercentage = (expected, actual) => {
+    if (expected === 0) return 0; // avoid division by zero
     const percent = (actual / expected) * 100;
-    if (percent >= 80) return "👍 Good";
-    if (percent >= 50) return "⚠️ Average";
-    return "❌ Poor";
+    return Math.round(percent); // returns percentage with 2 decimal places
 };
+
+
+
 
 const getUser = async (id) => {
     try {
@@ -251,16 +254,23 @@ const sendNotificationToEmail = async (req, res, next) => {
     }
 
     try {
-         const transporter = nodemailer.createTransport({
-            host: "smtp-relay.brevo.com", // Sendinblue SMTP host
-            port: 587,                     // Recommended port
-            secure: false,                 // TLS false for port 587
-            auth: {
-                user: "9b6dbb001@smtp-brevo.com", // Your Brevo SMTP login
-                pass: process.env.SENDBLUE_PASSWORD   // Your Brevo SMTP password
-            }
-        });
 
+
+        // // Replace Gmail transporter with Sendinblue (Brevo)
+        // const transporter = nodemailer.createTransport({
+        //     host: "smtp-relay.brevo.com", // Sendinblue SMTP host
+        //     port: 587,                     // Recommended port
+        //     secure: false,                 // TLS false for port 587
+        //     auth: {
+        //         user: "9b6dbb001@smtp-brevo.com", // Your Brevo SMTP login
+        //         pass: process.env.SENDBLUE_PASSWORD   // Your Brevo SMTP password
+        //     }
+        // });
+        const transporter = nodemailer.createTransport(
+            new sendinblueTransport({
+                apiKey: process.env.SENDBLUE_PASSWORD_API_KEY // yaha apna API key daalein
+            })
+        );
 
         // Generate PDF for alteration records
         let pdfAttachment = null;
@@ -322,7 +332,10 @@ const sendNotificationToEmail = async (req, res, next) => {
                                 <div style="font-size:16px; opacity:0.9;">Search By : ${await getUser(status.employee_id)} (employee id : ${status.employee_id})</div>
                             </div>
                              <div>
-                                <div style="font-size:16px; opacity:0.9;"> Work Status : ${calculateRating(status.actualSizeFound?.Expected_To_Found_Actual_Size_Qty || 0, status.actualSizeFound?.Actual_Found_Qty || 0)} </div>
+                                <div style="font-size:16px; opacity:0.9;">
+  Efficiency : ${calculatePercentage(status.actualSizeFound?.Expected_To_Found_Actual_Size_Qty || 0, status.actualSizeFound?.Actual_Found_Qty || 0) + '%'}</div>
+
+                                
                             </div>
                         </div>
                     </div>
@@ -440,9 +453,8 @@ const sendNotificationToEmail = async (req, res, next) => {
         </body>
         </html>`;
 
-        // const recipients = [EMAIL_ADDRESS, "logistics@qurvii.com", "dev@qurvii.com"];
-        // const recipients = [EMAIL_ADDRESS];
-        const recipients = ["neelima@qurvii.com", "dev@qurvii.com", "logistics@qurvii.com", "anu@qurvii.com", "kajal@qurvii.com"];
+        const recipients = [EMAIL_ADDRESS];
+        // const recipients = ["neelima@qurvii.com", "dev@qurvii.com", "logistics@qurvii.com", "anu@qurvii.com", "kajal@qurvii.com"];
 
         const mailOptions = {
             from: `Qurvii Logistics <${EMAIL_ADDRESS}>`,
@@ -453,7 +465,7 @@ const sendNotificationToEmail = async (req, res, next) => {
         };
 
         const info = await transporter.sendMail(mailOptions);
-        console.log("Mail sent:", info.response);
+        console.log("Mail sent:", info.response || info);
 
         res.status(200).json(new ApiResponse(200, {
             info,
@@ -495,8 +507,4 @@ export {
     sendNotificationToEmail,
     downloadAlterationPDF,
     health
-
 };
-
-
-
