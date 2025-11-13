@@ -60,3 +60,38 @@ export const getResponsesByPicklistId = async (req, res, next) => {
         next(error);
     }
 };
+
+// ************************* update functionality added ***********************************
+
+export const updatePicklistResponse = async (req, res, next) => {
+    try {
+        const { id, data } = req.body;
+
+        if (!id) {
+            return next(new ApiError(400, "id field is required"));
+        }
+
+        // Validate data field (optional, but safer)
+        if (data === undefined || data === null) {
+            return next(new ApiError(400, "data field is required"));
+        }
+
+        const updatedData = await PicklistResponse.findByIdAndUpdate(
+            id,
+            { $set: { status: data } },
+            { new: true } // returns the updated document
+        );
+
+        if (!updatedData) {
+            return next(new ApiError(404, "Record not found"));
+        }
+
+        return res
+            .status(200)
+            .json(new ApiResponse(200, updatedData, "Order updated successfully."));
+    } catch (error) {
+        next(error);
+    }
+};
+
+
