@@ -1126,8 +1126,8 @@ const sendNotificationToEmail = async (req, res, next) => {
         </body>
         </html>`;
 
-        const recipients = [EMAIL_ADDRESS];
-        // const recipients = ["neelima@qurvii.com", "dev@qurvii.com", "logistics@qurvii.com", "anu@qurvii.com", "kajal@qurvii.com"];
+        // const recipients = [EMAIL_ADDRESS];
+        const recipients = ["neelima@qurvii.com", "dev@qurvii.com", "logistics@qurvii.com", "anu@qurvii.com", "kajal@qurvii.com"];
 
         const mailOptions = {
             from: `Qurvii Logistics <${EMAIL_ADDRESS}>`,
@@ -1181,3 +1181,4 @@ export {
     downloadAlterationPDF,
     health
 };
+
