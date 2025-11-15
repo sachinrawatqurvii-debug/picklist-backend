@@ -47,6 +47,7 @@ import picklistRoutes from './routes/picklist.routes.js';
 import picklistResponseRoutes from './routes/picklistResponse.routes.js';
 import picklistHistoryRoutes from './routes/picklistHistory.routes.js';
 import orderNotificationRoutes from "./routes/orderNotifier.routes.js"
+import secondAttemptRoutes from "./routes/secondAttempt.routes.js";
 
 
 app.use((req, res, next) => {
@@ -64,6 +65,8 @@ app.use("/api/v1/picklist-history", picklistHistoryRoutes);
 
 app.use("/api/v1/notification", orderNotificationRoutes)
 
+// second attempt routes 
+app.use("/api/v1/second_attempt", secondAttemptRoutes);
 
 
 app.use(globalErrorHandler)
@@ -74,3 +77,4 @@ connectDB().then(() => {
 }).catch((error) => {
     console.log(`Failed to connect with database error :: ${error}`);
 })
+
