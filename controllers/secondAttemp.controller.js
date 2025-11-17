@@ -65,3 +65,81 @@ export const getSecondAttemptByPicklist = async (req, res, next) => {
         next(error)
     }
 };
+
+// GET all second records by date range
+
+export const filterSecondAttemptByDate = async (req, res, next) => {
+    try {
+        const { date, start, end } = req.query;
+        console.log('Query parameters:', { date, start, end });
+
+        let query = {};
+
+        // SINGLE DATE
+        if (date) {
+            console.log('Processing single date:', date);
+
+            // Method 1: Using string concatenation (more reliable)
+            const startOfDay = new Date(date + 'T00:00:00.000Z');
+            const endOfDay = new Date(date + 'T23:59:59.999Z');
+
+
+            console.log('Start of day:', startOfDay);
+            console.log('End of day:', endOfDay);
+
+            if (isNaN(startOfDay.getTime()) || isNaN(endOfDay.getTime())) {
+                console.log('Invalid date format');
+                return next(new ApiError(400, "Invalid date format"));
+            }
+
+            query.createdAt = {
+                $gte: startOfDay,
+                $lte: endOfDay
+            };
+        }
+
+        // DATE RANGE
+        if (start && end) {
+            console.log('Processing date range:', { start, end });
+
+            const startDate = new Date(start + 'T00:00:00.000Z');
+            const endDate = new Date(end + 'T23:59:59.999Z');
+
+            console.log('Parsed start date:', startDate);
+            console.log('Parsed end date:', endDate);
+
+            if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+                console.log('Invalid date format for range');
+                return next(new ApiError(400, "Invalid date format for start or end date"));
+            }
+
+            if (startDate > endDate) {
+                return next(new ApiError(400, "Start date must be before end date"));
+            }
+
+            query.createdAt = {
+                $gte: startDate,
+                $lte: endDate
+            };
+        }
+
+        // Validation - check if any date parameter was provided
+        if (!date && (!start || !end)) {
+            return next(new ApiError(400, "Please provide date or start & end dates"));
+        }
+
+        console.log('Final query:', JSON.stringify(query));
+
+        const data = await SecondAttempt.find(query).sort({ createdAt: -1 });
+        console.log('Found records:', data.length);
+
+        return res.status(200).json(
+            new ApiResponse(200, data, "Filtered records fetched successfully")
+        );
+
+    } catch (err) {
+        console.error('Error in filterSecondAttemptByDate:', err);
+        next(err);
+    }
+};
+
