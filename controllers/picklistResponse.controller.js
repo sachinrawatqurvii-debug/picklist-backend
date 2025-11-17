@@ -95,3 +95,93 @@ export const updatePicklistResponse = async (req, res, next) => {
 };
 
 
+// GET  picklist responses by picklist id array
+export const getResponsesByPicklistArray = async (req, res, next) => {
+    try {
+        let { picklist_ids } = req.body;
+
+        if (!Array.isArray(picklist_ids) || picklist_ids.length === 0) {
+            return next(new ApiError(400, "picklist_ids must be a non-empty array"));
+        }
+
+        // Convert to numbers
+        picklist_ids = picklist_ids.map(id => Number(id)).filter(id => !isNaN(id));
+
+        // Fetch all matching records
+        const records = await PicklistResponse.find({
+            picklist_id: { $in: picklist_ids }
+        });
+
+        if (!records || records.length === 0) {
+            return next(new ApiError(404, "No records found for given picklist_ids"));
+        }
+
+        // Grouping result
+        const grouped = {};
+
+        for (const rec of records) {
+            const pid = rec.picklist_id;
+
+            if (!grouped[pid]) {
+                grouped[pid] = {
+                    picklist_id: pid,
+                    FirstAttemptFound: 0,
+                    SecondAttemptFound: 0,
+                    AlterFirstAttempt: 0,
+                    AlterSecondAttempt: 0,
+                    CuttingFirstAttempt: 0,
+                    CuttingSecondAttempt: 0,
+                    totalFound: 0,
+                    totalAlter: 0,
+                    totalCutting: 0,
+                    records: []
+                };
+            }
+
+            const isSameTime =
+                new Date(rec.createdAt).getTime() === new Date(rec.updatedAt).getTime();
+
+            // ---- STATUS CHECK ----
+            const status = rec.status?.toLowerCase()?.trim(); // you used second_attemp_status earlier
+
+            if (status === "found") {
+                grouped[pid].totalFound++;
+
+                if (isSameTime) grouped[pid].FirstAttemptFound++;
+                else grouped[pid].SecondAttemptFound++;
+            }
+
+            if (status === "alter") {
+                grouped[pid].totalAlter++;
+
+                if (isSameTime) grouped[pid].AlterFirstAttempt++;
+                else grouped[pid].AlterSecondAttempt++;
+            }
+            if (status === "cutting") {
+                grouped[pid].totalCutting++;
+
+                if (isSameTime) grouped[pid].CuttingFirstAttempt++;
+                else grouped[pid].CuttingSecondAttempt++;
+            }
+
+
+            grouped[pid].records.push(rec);
+        }
+
+        const finalResponse = Object.values(grouped);
+
+        res.status(200).json(
+            new ApiResponse(
+                200,
+                finalResponse,
+                "Unique picklist report generated successfully"
+            )
+        );
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+
