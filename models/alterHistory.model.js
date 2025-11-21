@@ -20,6 +20,10 @@ const picklistAlterSchema = new mongoose.Schema({
     status: {
         type: String,
         default: "pending"
+    },
+    cutting_status: {
+        type: String,
+        default: "pending"
     }
 }, { timestamps: true });
 
