@@ -110,3 +110,20 @@ export const updatePicklistAlterationStatus = async (req, res, next) => {
         next(error);
     }
 }
+
+export const updatePicklistAlterationCuttingStatus = async (req, res, next) => {
+    try {
+        const { picklist_id } = req.body;
+        if (!picklist_id) {
+            return next(new ApiError(400, "Picklist id required"));
+        }
+        const picklist_history = await PicklistAlteration.findOneAndUpdate({ picklist_id }, { cutting_status: "completed" }, { new: true });
+        if (!picklist_history) {
+            return next(new ApiError(404, "Picklist not found"));
+        }
+        return res.status(200).json(new ApiResponse(200, picklist_history, "Picklist alterationc cutting status updated successfully."));
+    } catch (error) {
+        next(error);
+    }
+}
+
