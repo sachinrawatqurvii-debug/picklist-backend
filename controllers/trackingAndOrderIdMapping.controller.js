@@ -6,33 +6,41 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 // =====================================================
 // 1️⃣ Add Mapping
 // =====================================================
+
 export const addMapping = async (req, res, next) => {
     try {
-        const { tracking_id, order_id } = req.body;
+        const { records } = req.body;
 
-        // Validation
-        if (!tracking_id) {
-            throw new ApiError(400, "tracking_id is required");
-        }
-        if (!order_id || typeof order_id !== "number") {
-            throw new ApiError(400, "order_id is required and must be a number");
+        // Validate: records must be an array
+        if (!Array.isArray(records) || records.length === 0) {
+            throw new ApiError(400, "records must be a non-empty array");
         }
 
-        // ❗ Check if tracking_id already exists
-        const existingRecord = await TrackingAndOrderIdMapping.findOne({ tracking_id });
-
-        if (existingRecord) {
-            throw new ApiError(409, "tracking_id already exists");
+        // Validate each record
+        for (const r of records) {
+            if (!r.tracking_id) {
+                throw new ApiError(400, "tracking_id is required for all records");
+            }
+            if (!r.order_id || typeof r.order_id !== "number") {
+                throw new ApiError(400, "order_id must be a number for all records");
+            }
         }
 
-        const mapping = await TrackingAndOrderIdMapping.create({
-            tracking_id,
-            order_id
-        });
+        // Build bulk ops
+        const bulkOps = records.map((r) => ({
+            updateOne: {
+                filter: { tracking_id: r.tracking_id },
+                update: { $set: { order_id: r.order_id } },
+                upsert: true
+            }
+        }));
 
-        return res
-            .status(201)
-            .json(new ApiResponse(201, mapping, "Mapping added successfully"));
+        // Run bulk upsert
+        const result = await TrackingAndOrderIdMapping.bulkWrite(bulkOps);
+
+        return res.status(200).json(
+            new ApiResponse(200, result, "Bulk upsert completed successfully")
+        );
 
     } catch (error) {
         next(error);
@@ -116,3 +124,4 @@ export const bulkDeleteByOrderIds = async (req, res, next) => {
         next(error);
     }
 };
+
