@@ -19,6 +19,7 @@ import picklistAlterationRoutes from "./routes/picklistAlteration.routes.js";
 import claimRoutes from "./routes/calim.routes.js";
 import shopifyCancelledOrderRoutes from "./routes/shopifyCancelledOrder.route.js"
 import trackingAndOrderIdRoutes from "./routes/trackingAndOrderIdmapping.routes.js"
+import secondAttemptReportRoutes from "./routes/SecondAttemptReport.routes.js"
 
 app.use((req, res, next) => {
     console.log("Request received:", req.method, req.originalUrl);
@@ -63,4 +64,5 @@ connectDB().then(() => {
 }).catch((error) => {
     console.log(`Failed to connect with database error :: ${error}`);
 })
+
 
