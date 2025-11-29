@@ -36,6 +36,7 @@ app.use("/api/v1/notification", orderNotificationRoutes)
 
 // second attempt routes 
 app.use("/api/v1/second_attempt", secondAttemptRoutes);
+app.use("/api/v1/second_attempt_report", secondAttemptReportRoutes)
 
 
 // picklist alteration history routes registering 
@@ -62,3 +63,4 @@ connectDB().then(() => {
 }).catch((error) => {
     console.log(`Failed to connect with database error :: ${error}`);
 })
+
