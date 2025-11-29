@@ -720,7 +720,7 @@ const generateAlterationPDF = async (upRecords = [], downRecords = [], cuttingRe
             doc.fillColor('#2c3e50')
                 .fontSize(20)
                 .font('Helvetica-Bold')
-                .text('Alteration and Cutting Records Report', 50, 50);
+          .text(`Alteration and Cutting Records: Id -(${cuttingRecords[0]?.picklist_id || 0})`, 50, 50);
 
             doc.fillColor('#666')
                 .fontSize(10)
@@ -1181,4 +1181,5 @@ export {
     downloadAlterationPDF,
     health
 };
+
 
