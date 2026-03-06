@@ -7,7 +7,18 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json({}));
-app.use(cors());
+
+app.use(
+  cors({
+    origin: [
+      "https://scanreturn3.netlify.app",
+      "https://cuttinglist3.netlify.app",
+      "https://cuttinglist2.netlify.app",
+        "https://cuttinglist.netlify.app"
+    ],
+    credentials: true
+  })
+);
 
 // Routes 
 import picklistRoutes from './routes/picklist.routes.js';
@@ -40,4 +51,5 @@ connectDB().then(() => {
     })
 }).catch((error) => {
     console.log(`Failed to connect with database error :: ${error}`);
+
 })
