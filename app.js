@@ -6,20 +6,22 @@ import cors from "cors";
 const app = express();
 const PORT = process.env.PORT;
 
-app.use(express.json({ limit: "25mb" }));
-
 app.use(
   cors({
     origin: [
       "https://scanreturn3.netlify.app",
       "https://cuttinglist3.netlify.app",
       "https://cuttinglist2.netlify.app",
-        "https://cuttinglist.netlify.app"
+      "https://cuttinglist.netlify.app"
     ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-     allowedHeaders: ["Content-Type"]
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type"]
   })
 );
+
+app.options("*", cors());
+
+app.use(express.json({ limit: "25mb" }));
 
 // Routes 
 import picklistRoutes from './routes/picklist.routes.js';
@@ -54,6 +56,7 @@ connectDB().then(() => {
     console.log(`Failed to connect with database error :: ${error}`);
 
 })
+
 
 
 
