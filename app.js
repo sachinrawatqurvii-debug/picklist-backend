@@ -17,7 +17,7 @@ app.use(
         "https://cuttinglist.netlify.app"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type"]
+     allowedHeaders: ["Content-Type"]
   })
 );
 
@@ -54,4 +54,5 @@ connectDB().then(() => {
     console.log(`Failed to connect with database error :: ${error}`);
 
 })
+
 
