@@ -6,7 +6,7 @@ import cors from "cors";
 const app = express();
 const PORT = process.env.PORT;
 
-app.use(express.json({}));
+app.use(express.json({ limit: "25mb" }));
 
 app.use(
   cors({
@@ -54,5 +54,6 @@ connectDB().then(() => {
     console.log(`Failed to connect with database error :: ${error}`);
 
 })
+
 
 
