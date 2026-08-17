@@ -8,7 +8,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
  */
 export const getPicklistHistoryByPicklistId = async (req, res, next) => {
     try {
-        const { page = 1, limit = 100 } = req.query;
+        const { page = 1, limit = 250 } = req.query;
 
 
 
