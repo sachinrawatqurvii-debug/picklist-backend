@@ -20,6 +20,7 @@ import claimRoutes from "./routes/calim.routes.js";
 import shopifyCancelledOrderRoutes from "./routes/shopifyCancelledOrder.route.js"
 import trackingAndOrderIdRoutes from "./routes/trackingAndOrderIdmapping.routes.js"
 import secondAttemptReportRoutes from "./routes/SecondAttemptReport.routes.js"
+import picklistResponseStatRoutes from './routes/picklistResponseStats.routes.js';
 
 app.use((req, res, next) => {
     console.log("Request received:", req.method, req.originalUrl);
@@ -42,7 +43,8 @@ app.use("/api/v1/second_attempt_report", secondAttemptReportRoutes)
 
 // picklist alteration history routes registering 
 app.use("/api/v1/alteration", picklistAlterationRoutes)
-
+/// picklist response stats
+app.use('/api/v1/picklists', picklistResponseStatRoutes);
 
 // claim routes registering 
 app.use("/api/v1/claim", claimRoutes);
