@@ -1,58 +1,59 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const picklistResponseSchema = new mongoose.Schema({
+const picklistResponseSchema = new mongoose.Schema(
+  {
     channel: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     picklist_id: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     style_number: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     size: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     brand: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     status: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     employee_id: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     scanned_timestamp: {
-        type: Date,
+      type: Date,
     },
     color: {
-        type: String,
+      type: String,
     },
     isSplit: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     parentStyle: {
-        type: Number,
+      type: Number,
     },
     rackSpace: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     realated_stock: {
-        type: mongoose.Schema.Types.Mixed,
-        default: {}
-    }
+      type: mongoose.Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  { timestamps: true }
+);
 
-
-}, { timestamps: true });
-
-const PicklistResponse = mongoose.model("PicklistResponse", picklistResponseSchema);
-export { PicklistResponse }
+const PicklistResponse = mongoose.model('PicklistResponse', picklistResponseSchema);
+export { PicklistResponse };

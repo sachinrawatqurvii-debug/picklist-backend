@@ -2,6 +2,7 @@ import { PicklistHistory } from '../models/picklistHistory.model.js';
 import { PicklistResponse } from '../models/picklistResponse.model.js';
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
+
 const getPicklistResponses = async (req, res, next) => {
   const { date, startDate, endDate } = req.body || {};
 
@@ -103,6 +104,5 @@ const getPicklistResponses = async (req, res, next) => {
     next(error);
   }
 };
-
 
 export { getPicklistResponses };

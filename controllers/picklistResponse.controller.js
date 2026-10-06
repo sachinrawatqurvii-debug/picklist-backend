@@ -61,8 +61,6 @@ export const getResponsesByPicklistId = async (req, res, next) => {
     }
 };
 
-// ************************* update functionality added ***********************************
-
 export const updatePicklistResponse = async (req, res, next) => {
     try {
         const { id, data } = req.body;
@@ -94,8 +92,6 @@ export const updatePicklistResponse = async (req, res, next) => {
     }
 };
 
-
-// GET  picklist responses by picklist id array
 export const getResponsesByPicklistArray = async (req, res, next) => {
     try {
         let { picklist_ids } = req.body;
@@ -181,7 +177,4 @@ export const getResponsesByPicklistArray = async (req, res, next) => {
         next(error);
     }
 };
-
-
-
 

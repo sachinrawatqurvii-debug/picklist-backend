@@ -66,7 +66,7 @@ export const getSecondAttemptByPicklist = async (req, res, next) => {
     }
 };
 
-// GET all second records by date range
+
 
 export const filterSecondAttemptByDate = async (req, res, next) => {
     try {
@@ -142,4 +142,3 @@ export const filterSecondAttemptByDate = async (req, res, next) => {
         next(err);
     }
 };
-
