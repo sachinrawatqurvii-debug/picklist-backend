@@ -21,6 +21,7 @@ import shopifyCancelledOrderRoutes from "./routes/shopifyCancelledOrder.route.js
 import trackingAndOrderIdRoutes from "./routes/trackingAndOrderIdmapping.routes.js"
 import secondAttemptReportRoutes from "./routes/SecondAttemptReport.routes.js"
 import picklistResponseStatRoutes from './routes/picklistResponseStats.routes.js';
+import penalityBoardRoutes from './routes/penality-board/penalityBoard.routes.js';
 
 app.use((req, res, next) => {
     console.log("Request received:", req.method, req.originalUrl);
@@ -56,6 +57,8 @@ app.use("/api/v1/shopify", shopifyCancelledOrderRoutes);
 // tracking id and order id registering 
 app.use("/api/v1/order_id", trackingAndOrderIdRoutes)
 
+// penality-board route
+app.use('/api/v1/penality-boards', penalityBoardRoutes);
 
 
 app.use(globalErrorHandler)
