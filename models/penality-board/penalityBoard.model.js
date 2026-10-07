@@ -10,6 +10,10 @@ const penalityBoardSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    mistake_date: {
+      type: Date,
+      required: true,
+    },
     mistake_image: {
       type: String,
       default: null,
