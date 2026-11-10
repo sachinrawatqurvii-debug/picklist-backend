@@ -22,6 +22,7 @@ import trackingAndOrderIdRoutes from './routes/trackingAndOrderIdmapping.routes.
 import secondAttemptReportRoutes from './routes/SecondAttemptReport.routes.js';
 import picklistResponseStatRoutes from './routes/picklistResponseStats.routes.js';
 import penalityBoardRoutes from './routes/penality-board/penalityBoard.routes.js';
+import qrWithUrlRoutes from './routes/QrWithUrl/qrWithUrl.routes.js';
 app.use((req, res, next) => {
   console.log('Request received:', req.method, req.originalUrl);
   next();
@@ -58,6 +59,9 @@ app.use('/api/v1/order_id', trackingAndOrderIdRoutes);
 
 // penality-board route
 app.use('/api/v1/penality-boards', penalityBoardRoutes);
+
+// qr with url route
+app.use('/api/v1/qr-with-url', qrWithUrlRoutes);
 
 app.use(globalErrorHandler);
 connectDB()
