@@ -1,73 +1,75 @@
-import express from "express";
-import "dotenv/config";
-import { connectDB } from "./db/db.js";
-import { globalErrorHandler } from "./middlewares/global.middleware.js";
-import cors from "cors";
+import express from 'express';
+import 'dotenv/config';
+import { connectDB } from './db/db.js';
+import { globalErrorHandler } from './middlewares/global.middleware.js';
+import cors from 'cors';
 const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json({}));
 app.use(cors());
 
-// Routes 
+// Routes
 import picklistRoutes from './routes/picklist.routes.js';
 import picklistResponseRoutes from './routes/picklistResponse.routes.js';
 import picklistHistoryRoutes from './routes/picklistHistory.routes.js';
-import orderNotificationRoutes from "./routes/orderNotifier.routes.js";
-import secondAttemptRoutes from "./routes/secondAttempt.routes.js";
-import picklistAlterationRoutes from "./routes/picklistAlteration.routes.js";
-import claimRoutes from "./routes/calim.routes.js";
-import shopifyCancelledOrderRoutes from "./routes/shopifyCancelledOrder.route.js"
-import trackingAndOrderIdRoutes from "./routes/trackingAndOrderIdmapping.routes.js"
-import secondAttemptReportRoutes from "./routes/SecondAttemptReport.routes.js"
+import orderNotificationRoutes from './routes/orderNotifier.routes.js';
+import secondAttemptRoutes from './routes/secondAttempt.routes.js';
+import picklistAlterationRoutes from './routes/picklistAlteration.routes.js';
+import claimRoutes from './routes/calim.routes.js';
+import shopifyCancelledOrderRoutes from './routes/shopifyCancelledOrder.route.js';
+import trackingAndOrderIdRoutes from './routes/trackingAndOrderIdmapping.routes.js';
+import secondAttemptReportRoutes from './routes/SecondAttemptReport.routes.js';
 import picklistResponseStatRoutes from './routes/picklistResponseStats.routes.js';
 import penalityBoardRoutes from './routes/penality-board/penalityBoard.routes.js';
-
+import qrWithUrlRoutes from './routes/QrWithUrl/qrWithUrl.routes.js';
 app.use((req, res, next) => {
-    console.log("Request received:", req.method, req.originalUrl);
-    next();
+  console.log('Request received:', req.method, req.originalUrl);
+  next();
 });
 
-// Registering Routes 
+// Registering Routes
 
-app.use("/api/v1/picklist", picklistRoutes);
-app.use("/api/v1/picklist-responses", picklistResponseRoutes);
-app.use("/api/v1/picklist-history", picklistHistoryRoutes);
+app.use('/api/v1/picklist', picklistRoutes);
+app.use('/api/v1/picklist-responses', picklistResponseRoutes);
+app.use('/api/v1/picklist-history', picklistHistoryRoutes);
 
-// order notification routes 
-app.use("/api/v1/notification", orderNotificationRoutes)
+// order notification routes
+app.use('/api/v1/notification', orderNotificationRoutes);
 
-// second attempt routes 
-app.use("/api/v1/second_attempt", secondAttemptRoutes);
-app.use("/api/v1/second_attempt_report", secondAttemptReportRoutes)
+// second attempt routes
+app.use('/api/v1/second_attempt', secondAttemptRoutes);
+app.use('/api/v1/second_attempt_report', secondAttemptReportRoutes);
 
+// picklist alteration history routes registering
+app.use('/api/v1/alteration', picklistAlterationRoutes);
 
-// picklist alteration history routes registering 
-app.use("/api/v1/alteration", picklistAlterationRoutes)
 /// picklist response stats
 app.use('/api/v1/picklists', picklistResponseStatRoutes);
 
-// claim routes registering 
-app.use("/api/v1/claim", claimRoutes);
+// claim routes registering
+app.use('/api/v1/claim', claimRoutes);
 
 // shopify cancelled order route registering
 
-app.use("/api/v1/shopify", shopifyCancelledOrderRoutes);
+app.use('/api/v1/shopify', shopifyCancelledOrderRoutes);
 
-// tracking id and order id registering 
-app.use("/api/v1/order_id", trackingAndOrderIdRoutes)
+// tracking id and order id registering
+app.use('/api/v1/order_id', trackingAndOrderIdRoutes);
 
 // penality-board route
 app.use('/api/v1/penality-boards', penalityBoardRoutes);
 
+// qr with url route
+app.use('/api/v1/qr-with-url', qrWithUrlRoutes);
 
-app.use(globalErrorHandler)
-connectDB().then(() => {
+app.use(globalErrorHandler);
+connectDB()
+  .then(() => {
     app.listen(PORT, () => {
-        console.log(`Server is running on ${PORT}`)
-    })
-}).catch((error) => {
+      console.log(`Server is running on ${PORT}`);
+    });
+  })
+  .catch((error) => {
     console.log(`Failed to connect with database error :: ${error}`);
-})
-
-
+  });
